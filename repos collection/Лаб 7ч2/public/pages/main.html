@@ -1,0 +1,18 @@
+<div class="hero-section">
+    <div style="font-size:3.5rem;text-align:center;margin-bottom:0.5rem;">👩‍🍳📖</div>
+    <h1 style="font-size:2rem;color:#3b2a22;margin-bottom:0.5rem;text-align:center;">Сборник кулинарных рецептов</h1>
+    <p style="text-align:center;color:#5a4435;max-width:600px;margin:0 auto 1rem;">
+        Ваша персональная кулинарная книга - вдохновение, вкус и уют на одной странице.
+    </p>
+</div>
+<div style="background:#fef7ef;border-radius:1.5rem;padding:1.5rem;margin:1.5rem 0;border-left:8px solid #d48c48;">
+    <p><strong>О приложении</strong> - это SPA, где страницы загружаются через AJAX без перезагрузки всего документа.</p>
+    <p style="margin-top:0.7rem;">Нажмите кнопку ниже, чтобы получить данные из JSON-файла и вывести их в таблицу.</p>
+</div>
+
+<div class="btn-group">
+    <button onclick="loadRecipesFromJson()">Загрузить рецепты из JSON (AJAX)</button>
+    <button class="btn-secondary" onclick="window.location.href='/download-recipes-json'">Скачать JSON-файл</button>
+</div>
+
+<div id="AjaxTableZone" style="margin-top: 1.2rem;"></div>

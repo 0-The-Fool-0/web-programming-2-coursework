@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарный сборник | SPA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(145deg, #f7f3e9 0%, #e9e2d4 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .spa-header {
+            background: #2e241f;
+            padding: 1rem 2rem;
+            color: #f9e3c7;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e0b07f;
+        }
+        .spa-header h2 {
+            font-weight: 500;
+            font-size: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .badge-spa {
+            background: #c2793b;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .content-pane {
+            padding: 2rem 2rem 2rem 2rem;
+            min-height: 450px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        button {
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 3rem;
+            transition: all 0.2s;
+            background: #c56a2c;
+            color: white;
+            padding: 0.7rem 1.8rem;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button:hover {
+            background: #a8541f;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background: #5c483b;
+        }
+        .btn-secondary:hover {
+            background: #3f2e24;
+        }
+        .hero-icon {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .hero-section h1 {
+            font-size: 2rem;
+            color: #3b2a22;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .hero-section p {
+            text-align: center;
+            color: #5a4435;
+            max-width: 600px;
+            margin: 0 auto 1rem;
+        }
+        .info-card {
+            background: #fef7ef;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 8px solid #d48c48;
+        }
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        .feature-badge {
+            background: white;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.9rem;
+            border: 1px solid #f0dbc8;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 1.2rem;
+            background: #fffcf8;
+            margin: 1.2rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .recipes-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 420px;
+        }
+        .recipes-table th {
+            background: #e9dacb;
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-weight: 700;
+        }
+        .recipes-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #f0e2d4;
+            vertical-align: top;
+        }
+        .recipe-name {
+            font-weight: 600;
+            color: #a5521f;
+        }
+        footer {
+            background: #f9f1e9;
+            text-align: center;
+            padding: 0.9rem;
+            font-size: 0.8rem;
+            color: #8b6b50;
+            border-top: 1px solid #eedfcb;
+        }
+        @media (max-width: 680px) {
+            .content-pane { padding: 1.5rem; }
+            .hero-section h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="spa-header">
+        <h2><span>🍽️</span> Рецептопедия</h2>
+        <div class="badge-spa"> SPA · роутинг через hash</div>
+    </div>
+
+    <!-- Динамический контент -->
+    <div id="IPage" class="content-pane"></div>
+
+    <!-- Навигационные кнопки (как в примере) -->
+    <div class="btn-group" style="margin-top:0; margin-bottom:1.5rem;">
+        <button onclick="switchToMainPage()">Главная</button>
+        <button onclick="switchToRecipesPage()">Рецепты</button>
+    </div>
+    <footer>
+     Сборник кулинарных рецептов | SPA с hash-роутингом (вариант №3)
+    </footer>
+</div>
+
+<script>
+    "use strict";
+
+    // ----- Данные (рецепты) -----
+    const recipes = [
+        { name: "Цезарь с креветками", description: "Нежный салат с тигровыми креветками, листьями романо, пармезаном, соусом на основе желтка и анчоусов. Хрустящие гренки придают текстуру." },
+        { name: "Борщ сибирский", description: "Наваристый бульон со свеклой, капустой, морковью и картофелем. Подаётся с пампушками, чесноком и сметаной. Классика семейной кухни." },
+        { name: "Тирамису классический", description: "Итальянский десерт без выпечки: печенье савоярди, пропитанное эспрессо, прослойка из маскарпоне с яйцами и сахаром, посыпанное какао." },
+        { name: "Лазанья Болоньезе", description: "Слоёное блюдо из листов лазаньи, мясного соуса болоньезе, соуса бешамель и пармезана. Запекается до золотистой корочки." },
+        { name: "Панкейки на кефире", description: "Пышные американские оладьи, мягкие внутри. Подаются с кленовым сиропом, свежими ягодами или мёдом. Идеальный завтрак." },
+        { name: "Суп Том Ям", description: "Тайский острый суп на кокосовом молоке с креветками, грибами, лемонграссом и галангалом. Пикантный, ароматный, согревающий." }
+    ];
+
+    // Состояние приложения (аналог модели)
+    let SPAState = { pagename: 'Main' };
+
+    // Отслеживаем изменение хэша (кнопки назад/вперёд, прямая ссылка)
+    window.onhashchange = switchToStateFromURLHash;
+
+    // Основной роутер: парсит хэш, обновляет состояние и отрисовывает интерфейс
+    function switchToStateFromURLHash() {
+        let hash = window.location.hash;
+        let stateStr = hash.substr(1); // убираем '#'
+
+        if (stateStr !== "") {
+            // Поддерживаем страницы: Main, Recipes
+            if (stateStr === "Main" || stateStr === "Recipes") {
+                SPAState = { pagename: stateStr };
+            } else {
+                // Если неизвестная страница — идём на главную
+                SPAState = { pagename: 'Main' };
+            }
+        } else {
+            SPAState = { pagename: 'Main' };
+        }
+
+        console.log("Текущее состояние:", SPAState);
+        renderPage();
+    }
+
+    // Генерация HTML-кода для текущего состояния (View)
+    function renderPage() {
+        const container = document.getElementById('IPage');
+        let html = "";
+
+        switch (SPAState.pagename) {
+            case 'Main':
+                html = `
+                    <div class="hero-section">
+                        <div class="hero-icon">👩‍🍳📖</div>
+                        <h1>Сборник кулинарных рецептов</h1>
+                        <p>Ваша персональная кулинарная книга — вдохновение, вкус и уют на одной странице.</p>
+                    </div>
+                    <div class="info-card">
+                        <p> <strong>О приложении</strong> — это современное Single Page Application (SPA), где собраны проверенные рецепты для любого настроения. Главная цель — вдохновлять готовить вкусно и с душой.</p>
+                        <p> В коллекции представлены блюда от классических супов до изысканных десертов. Каждый рецепт сопровождается кратким описанием, чтобы вы легко могли выбрать блюдо для ужина или праздника.</p>
+                        <div class="feature-list">
+                            <span class="feature-badge">Итальянская классика</span>
+                            <span class="feature-badge">Здоровое питание</span>
+                            <span class="feature-badge">Сладкие шедевры</span>
+                            <span class="feature-badge">Быстрые идеи</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button onclick="switchToRecipesPage()">Перейти к рецептам →</button>
+                    </div>
+                `;
+                break;
+
+            case 'Recipes':
+                // Формируем таблицу рецептов
+                let tableRows = "";
+                for (let i = 0; i < recipes.length; i++) {
+                    tableRows += `
+                        <tr>
+                            <td class="recipe-name">${escapeHtml(recipes[i].name)}</td>
+                            <td>${escapeHtml(recipes[i].description)}</td>
+                        </tr>
+                    `;
+                }
+                const countText = getPluralSuffix(recipes.length);
+                html = `
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <h3>Кулинарный сборник</h3>
+                        <span style="background: #efd5bd; padding: 0.3rem 1rem; border-radius: 40px;">${recipes.length} рецепт${countText}</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="recipes-table">
+                            <thead>
+                                <tr><th>Название рецепта</th><th>Описание рецепта</th></tr>
+                            </thead>
+                            <tbody>${tableRows}</tbody>
+                        </table>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn-secondary" onclick="switchToMainPage()">← Вернуться на главную</button>
+                    </div>
+                    <div style="margin-top: 1rem; font-size:0.8rem; background:#faf3ea; padding:0.6rem; border-radius:1rem; text-align:center;">
+                        SPA-навигация через хэш URL — используйте кнопки браузера «назад/вперёд»
+                    </div>
+                `;
+                break;
+
+            default:
+                // fallback
+                html = "<p>Страница не найдена</p>";
+        }
+
+        container.innerHTML = html;
+    }
+
+    // Вспомогательная функция для безопасного вывода текста
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Склонение слова "рецепт"
+    function getPluralSuffix(n) {
+        if (n % 10 === 1 && n % 100 !== 11) return '';
+        if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return 'а';
+        return 'ов';
+    }
+
+    // ----- Навигационные функции (изменяют хэш, автоматически вызывая switchToStateFromURLHash) -----
+    function switchToMainPage() {
+        location.hash = "Main";
+    }
+
+    function switchToRecipesPage() {
+        location.hash = "Recipes";
+    }
+
+    // Инициализация: читаем хэш при загрузке
+    switchToStateFromURLHash();
+</script>
+</body>
+</html>

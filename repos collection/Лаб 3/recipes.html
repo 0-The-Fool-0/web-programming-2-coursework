@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сборник кулинарных рецептов - JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fef9f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a2c2c;
+            text-align: center;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        input[type="button"] {
+            padding: 10px 20px;
+            background-color: #d4a373;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #b68b6e;
+        }
+        .console-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #6b4f3c;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сборник кулинарных рецептов</h1>
+    <div class="buttons">
+        <input onclick="onAdd();" value="Ввод информации о рецепте" type="button">
+        <input onclick="onDelete();" value="Удаление информации о рецепте" type="button">
+        <input onclick="onGet();" value="Получение информации о рецепте" type="button">
+        <input onclick="onList();" value="Перечень всех рецептов" type="button">
+    </div>
+    <div class="console-note">
+        Откройте консоль браузера (F12), чтобы увидеть результаты.
+    </div>
+
+    <script src="recipes.js"></script>
+</body>
+</html>

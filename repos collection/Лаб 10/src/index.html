@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Лабораторная 10 - RxJS CRUD</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Сборник кулинарных рецептов</h1>
+      <p class="subtitle">Лабораторная работа 10: Webpack и RxJS</p>
+      <div class="hero-banner">
+        <img src="/images/hero-food.svg" width="1200" height="260" alt="Баннер: домашние рецепты" />
+      </div>
+
+      <section class="card">
+        <h2 id="formTitle">Добавить рецепт</h2>
+        <form id="recipeForm">
+          <input type="hidden" id="recipeId" />
+          <label>
+            Название
+            <input type="text" id="title" required />
+          </label>
+          <label>
+            Описание
+            <textarea id="description" rows="3" required></textarea>
+          </label>
+          <label>
+            Категория
+            <input type="text" id="category" required />
+          </label>
+          <label>
+            Время приготовления (мин)
+            <input type="number" id="cookTimeMinutes" min="1" required />
+          </label>
+          <div class="buttons">
+            <button type="submit">Сохранить</button>
+            <button type="button" id="cancelEdit" class="secondary">Отмена</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Список рецептов</h2>
+
+        <div class="toolbar">
+          <label class="inline">
+            Поиск
+            <input id="searchInput" type="text" placeholder="Название или категория" />
+          </label>
+          <label class="inline">
+            Сортировка
+            <select id="sortSelect">
+              <option value="id-asc">ID по возрастанию</option>
+              <option value="id-desc">ID по убыванию</option>
+              <option value="title-asc">Название A-Я</option>
+              <option value="title-desc">Название Я-A</option>
+              <option value="time-asc">Время по возрастанию</option>
+              <option value="time-desc">Время по убыванию</option>
+            </select>
+          </label>
+          <button id="refreshButton" type="button">Обновить с сервера</button>
+        </div>
+
+        <div id="message"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Название</th>
+              <th>Категория</th>
+              <th>Время</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+
+        <div class="pagination">
+          <button type="button" id="prevPage" class="secondary">Назад</button>
+          <div id="pageButtons" class="page-buttons"></div>
+          <span id="pageInfo">Страница 1 из 1</span>
+          <button type="button" id="nextPage" class="secondary">Вперёд</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

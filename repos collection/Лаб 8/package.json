@@ -1,0 +1,14 @@
+{
+  "name": "lab8-recipes-crud",
+  "version": "1.0.0",
+  "description": "Лабораторная работа 8: CRUD-приложение для сборника рецептов",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}

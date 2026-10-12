@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Динамическое меню | Кулинарный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fef9f0;
+            font-family: 'Verdana', sans-serif;
+            padding: 20px;
+            color: #3b2b1f;
+        }
+
+        /* обертка страницы */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #fffaf2;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden;
+            padding: 20px 30px 40px 30px;
+        }
+
+        h1 {
+            font-family: 'Georgia', serif;
+            color: #4a2c2c;
+            border-bottom: 3px solid #d4a373;
+            display: inline-block;
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            background: #f5ede3;
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            border-left: 5px solid #d4a373;
+        }
+
+        /* контейнер для горизонтального меню */
+        .horizontal-menu {
+            background: #e9d8c5;
+            border-radius: 60px;
+            padding: 8px 20px;
+            margin: 20px 0 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* базовый стиль пункта меню */
+        .menu-item {
+            cursor: pointer;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 40px;
+            transition: all 0.2s ease;
+            user-select: none;
+            background-color: #f5e6d3;
+            border: 1px solid #b68b6e;
+            color: #3b2b1f;
+            display: inline-block;
+            margin: 4px 6px;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            background-color: #d4a373;
+            color: white;
+            border-color: #9b6a48;
+            transform: translateY(-2px);
+        }
+
+        /* вертикальное подменю (выпадашка) */
+        .submenu-container {
+            position: absolute;
+            background: #fffaf2;
+            border: 1px solid #d4a373;
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+            min-width: 200px;
+            z-index: 1000;
+            padding: 8px 0;
+            backdrop-filter: blur(2px);
+            background-color: rgba(255, 250, 242, 0.98);
+        }
+
+        .submenu-container .menu-item {
+            display: block;
+            margin: 4px 12px;
+            border-radius: 30px;
+            background-color: #fef7ef;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .submenu-container .menu-item.has-submenu::after {
+            content: " ▶";
+            float: right;
+            font-size: 12px;
+            color: #b68b6e;
+        }
+
+        .submenu-container .menu-item:hover {
+            background-color: #d4a373;
+            color: white;
+        }
+
+        /* стили для контента страницы (демо) */
+        .demo-content {
+            margin-top: 40px;
+            padding: 25px;
+            background: #fff5ea;
+            border-radius: 32px;
+            border: 1px solid #e9d8c5;
+        }
+
+        .demo-content h2 {
+            color: #6b4f3c;
+            margin-bottom: 12px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .demo-content p {
+            line-height: 1.5;
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+
+        .info-badge {
+            background: #d4a37330;
+            border-radius: 20px;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 10px;
+            color: #5a3e2a;
+        }
+
+        hr {
+            margin: 20px 0;
+            border-color: #e9d8c5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #8b6b4f;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <h1>Интерактивное меню</h1>
+    <div class="description">
+        <strong>Горизонтальное меню с выпадающими подменю</strong> — построено динамически из JavaScript-массива.<br>
+        Нажмите на любой пункт, содержащий подменю (▶), чтобы открыть вложенный список. <br>
+        Пункты с прямыми ссылками ведут на соответствующий раздел (демо-ссылки #). <br>
+        Подменю располагаются <strong>снизу</strong> (для главных пунктов) или <strong>справа</strong> (для вложенных).
+    </div>
+
+    <!-- Здесь динамически построится горизонтальное меню -->
+    <div id="dynamic-horizontal-menu" class="horizontal-menu"></div>
+
+    <div class="demo-content">
+        <h2>Кулинарный навигатор</h2>
+        <p>Используйте меню выше, чтобы быстро перемещаться по разделам рецептов, кухонь мира и полезным советам. 
+        Меню полностью строится из структурированного массива данных, поддерживает вложенность до любого уровня. 
+        При клике на элемент с подменю вызывается функция <code>ShowMenu()</code>, которая динамически рендерит вертикальное меню 
+        относительно родительского блока.</p>
+        <p><strong>Особенности реализации:</strong> каждый пункт с подпунктами получает обработчик <code>onclick</code>; 
+        при повторном клике старое подменю того же родителя удаляется, новое строится заново. 
+        Закрыть все открытые меню можно, кликнув в любую область вне меню (кроме самих элементов меню). 
+        Горизонтальное меню рендерится один раз при загрузке страницы.</p>
+    </div>
+    <footer>
+        Динамическое меню | Лабораторная работа №6
+    </footer>
+</div>
+
+<script>
+    // МАССИВ МЕНЮ (кулинарная тематика, с вложенностью 3 уровня)
+    const culinaryMenu = [
+        {
+            name: 'Рецепты',
+            submenu: [
+                {
+                    name: 'Супы',
+                    submenu: [
+                        { name: 'Борщ классический', url: '#' },
+                        { name: 'Солянка мясная', url: '#' },
+                        { name: 'Крем-суп из тыквы', url: '#' },
+                        { name: 'Окрошка', url: '#' }
+                    ]
+                },
+                {
+                    name: 'Салаты',
+                    submenu: [
+                        { name: 'Цезарь с курицей', url: '#' },
+                        { name: 'Греческий салат', url: '#' },
+                        { name: 'Оливье', url: '#' },
+                        { name: 'Салат с тунцом', url: '#' }
+                    ]
+                },
+                {
+                    name: 'Горячее',
+                    submenu: [
+                        { name: 'Паста Карбонара', url: '#' },
+                        { name: 'Стейк Рибай', url: '#' },
+                        { name: 'Запеканка овощная', url: '#' },
+                        {
+                            name: 'Плов узбекский',
+                            submenu: [
+                                { name: 'С бараниной', url: '#' },
+                                { name: 'С курицей', url: '#' },
+                                { name: 'Вегетарианский', url: '#' }
+                            ]
+                        }
+                    ]
+                },
+                { name: 'Десерты', url: '#' },
+                { name: 'Выпечка', url: '#' }
+            ]
+        },
+        {
+            name: 'Кухни мира',
+            submenu: [
+                {
+                    name: '🇮🇹 Итальянская',
+                    submenu: [
+                        { name: 'Пицца Маргарита', url: '#' },
+                        { name: 'Ризотто с грибами', url: '#' },
+                        { name: 'Тирамису', url: '#' }
+                    ]
+                },
+                {
+                    name: '🇯🇵 Японская',
+                    submenu: [
+                        { name: 'Суши', url: '#' },
+                        { name: 'Рамен', url: '#' },
+                        { name: 'Мисо-суп', url: '#' }
+                    ]
+                },
+                {
+                    name: '🇫🇷 Французская',
+                    submenu: [
+                        { name: 'Круассаны', url: '#' },
+                        { name: 'Луковый суп', url: '#' },
+                        { name: 'Рататуй', url: '#' }
+                    ]
+                },
+                { name: '🇺🇦 Украинская', url: '#' },
+                { name: '🇬🇪 Грузинская', url: '#' }
+            ]
+        },
+        {
+            name: 'Советы',
+            submenu: [
+                { name: 'Секреты идеального теста', url: '#' },
+                { name: 'Как выбрать свежие продукты', url: '#' },
+                {
+                    name: 'Техники нарезки',
+                    submenu: [
+                        { name: 'Кубики', url: '#' },
+                        { name: 'Соломка', url: '#' },
+                        { name: 'Брюнуаз', url: '#' }
+                    ]
+                },
+                { name: 'Хранение специй', url: '#' }
+            ]
+        },
+        {
+            name: 'Ингредиенты',
+            submenu: [
+                { name: 'Овощи и фрукты', url: '#' },
+                { name: 'Мясо и птица', url: '#' },
+                { name: 'Рыба и морепродукты', url: '#' },
+                { name: 'Сыры', url: '#' },
+                { name: 'Крупы и паста', url: '#' }
+            ]
+        },
+        {
+            name: 'О проекте',
+            url: '#'     // простой пункт без подменю
+        }
+    ];
+
+    // ---------- Глобальные утилиты для работы с подменю ----------
+    // Функция закрытия всех открытых подменю (удаляет DOM-элементы)
+    function closeAllSubmenus() {
+        const allSubmenus = document.querySelectorAll('.submenu-container');
+        allSubmenus.forEach(menu => {
+            if (menu.parentNode) menu.parentNode.removeChild(menu);
+        });
+        // также очищаем ссылки на подменю в DOM-элементах (необязательно, но чисто)
+        const allMenuItems = document.querySelectorAll('.menu-item');
+        allMenuItems.forEach(item => {
+            if (item._submenuRef) {
+                item._submenuRef = null;
+            }
+        });
+    }
+
+    // позиционирование подменю: снизу (для горизонтальных) или справа (для вертикальных вложенных)
+    function positionSubmenu(submenuDiv, parentElem, isTopLevel = false) {
+        const rect = parentElem.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+        // Определяем, горизонтальный это родитель (из горизонтального меню) или элемент внутри вертикального меню
+        const isHorizontalParent = parentElem.closest('.horizontal-menu') !== null && 
+                                   !parentElem.closest('.submenu-container');
+        
+        if (isHorizontalParent) {
+            // Главное горизонтальное меню -> показываем подменю СНИЗУ
+            submenuDiv.style.left = rect.left + scrollLeft + 'px';
+            submenuDiv.style.top = rect.bottom + scrollTop + 4 + 'px';
+        } else {
+            // Это вложенный пункт (внутри вертикального меню) -> показываем СПРАВА
+            submenuDiv.style.left = rect.right + scrollLeft + 6 + 'px';
+            submenuDiv.style.top = rect.top + scrollTop - 5 + 'px';
+            // если не помещается справа, пробуем слева (запасной вариант)
+            const rightEdge = rect.right + submenuDiv.offsetWidth + 10;
+            if (rightEdge > window.innerWidth) {
+                submenuDiv.style.left = rect.left - submenuDiv.offsetWidth - 6 + 'px';
+            }
+        }
+
+        // небольшая проверка на выход за нижнюю границу
+        const bottomEdge = submenuDiv.getBoundingClientRect().bottom;
+        if (bottomEdge > window.innerHeight) {
+            // корректируем вверх
+            submenuDiv.style.top = (rect.top - submenuDiv.offsetHeight + scrollTop - 5) + 'px';
+        }
+    }
+
+    /**
+     * Функция ShowMenu – строит вертикальное подменю по массиву MenuItemsA
+     * и прикрепляет его относительно ParentElem.
+     * @param {Array} MenuItemsA массив пунктов (name, url/submenu)
+     * @param {HTMLElement} ParentElem элемент, по которому кликнули (родитель для позиционирования)
+     */
+    function ShowMenu(MenuItemsA, ParentElem) {
+        if (!MenuItemsA || !MenuItemsA.length) return;
+
+        // Если для этого родителя уже существует подменю – удаляем его (чтобы не было дублирования)
+        if (ParentElem._submenuRef && ParentElem._submenuRef.parentNode) {
+            ParentElem._submenuRef.parentNode.removeChild(ParentElem._submenuRef);
+            ParentElem._submenuRef = null;
+        }
+
+        // Создаем контейнер подменю
+        const submenuDiv = document.createElement('div');
+        submenuDiv.className = 'submenu-container';
+        
+        // Проходим по массиву и создаем пункты
+        MenuItemsA.forEach(item => {
+            const menuItemDiv = document.createElement('div');
+            menuItemDiv.className = 'menu-item';
+            menuItemDiv.textContent = item.name;
+            
+            // Если у пункта есть подменю (submenu) – добавляем класс и обработчик клика
+            if (item.submenu && Array.isArray(item.submenu) && item.submenu.length > 0) {
+                menuItemDiv.classList.add('has-submenu');
+                // при клике – вызываем ShowMenu для подпунктов, передавая текущий элемент как ParentElem
+                menuItemDiv.onclick = (e) => {
+                    e.stopPropagation();   // чтобы не сработал document клик
+                    // вызываем построение подменю для вложенного массива
+                    ShowMenu(item.submenu, menuItemDiv);
+                };
+            } 
+            // Иначе если есть url – переход по ссылке
+            else if (item.url) {
+                menuItemDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    if (item.url && item.url !== '#') {
+                        window.location.href = item.url;
+                    } else {
+                        // демо-поведение: показываем уведомление (можно убрать)
+                        alert(`🔗 Демо-переход: ${item.name}\n(в реальном проекте ведёт на ${item.url || 'раздел'})`);
+                    }
+                    // опционально: можно закрыть все меню после клика
+                    closeAllSubmenus();
+                };
+            } else {
+                // fallback: если нет ни submenu, ни url (просто информационный пункт)
+                menuItemDiv.style.cursor = 'default';
+                menuItemDiv.style.opacity = '0.7';
+                menuItemDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    alert(`ℹ️ Информационный раздел: ${item.name}`);
+                    closeAllSubmenus();
+                };
+            }
+            
+            submenuDiv.appendChild(menuItemDiv);
+        });
+        
+        document.body.appendChild(submenuDiv);
+        
+        // позиционируем подменю (определяем по типу родителя)
+        const isTopLevelParent = ParentElem.closest('.horizontal-menu') && !ParentElem.closest('.submenu-container');
+        positionSubmenu(submenuDiv, ParentElem, isTopLevelParent);
+        
+        // Сохраняем ссылку на подменю в родительском элементе, чтобы потом удалить при повторном вызове
+        ParentElem._submenuRef = submenuDiv;
+        
+        // Добавляем обработчик для закрытия при клике вне зоны меню (вешается один раз глобально)
+        // Но чтобы не вешать много раз, используем делегирование с флагом
+        if (!window._menuClickHandlerAttached) {
+            document.addEventListener('click', function globalClickHandler(event) {
+                // Проверяем, был ли клик внутри какого-либо элемента меню (горизонтального или подменю)
+                const isClickInsideMenu = event.target.closest('.menu-item') || event.target.closest('.submenu-container');
+                if (!isClickInsideMenu) {
+                    // клик снаружи – закрываем все открытые подменю
+                    closeAllSubmenus();
+                }
+            });
+            window._menuClickHandlerAttached = true;
+        }
+        
+        // Предотвращаем всплытие, чтобы глобальный клик сразу не закрыл только что открытое меню
+        submenuDiv.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    // ---------- Построение горизонтального меню из массива (вызывается один раз при загрузке) ----------
+    function buildHorizontalMenu(menuArray, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = ''; // очищаем
+        
+        menuArray.forEach(topItem => {
+            const menuDiv = document.createElement('div');
+            menuDiv.className = 'menu-item';
+            menuDiv.textContent = topItem.name;
+            
+            // Если у корневого пункта есть подменю
+            if (topItem.submenu && Array.isArray(topItem.submenu) && topItem.submenu.length > 0) {
+                menuDiv.classList.add('has-submenu');
+                // При клике на пункт с подменю вызываем ShowMenu и передаем массив подпунктов
+                menuDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    // Перед открытием нового подменю желательно закрыть все остальные,
+                    // чтобы не накапливались старые (повышает юзабилити)
+                    closeAllSubmenus();
+                    ShowMenu(topItem.submenu, menuDiv);
+                };
+            } 
+            else if (topItem.url) {
+                menuDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    if (topItem.url && topItem.url !== '#') {
+                        window.location.href = topItem.url;
+                    } else {
+                        alert(`🔗 Переход: ${topItem.name} (демо-ссылка)`);
+                    }
+                    closeAllSubmenus();
+                };
+            } else {
+                // если нет действий, просто информативно
+                menuDiv.style.cursor = 'default';
+                menuDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    alert(`📘 Раздел «${topItem.name}» в разработке`);
+                };
+            }
+            
+            container.appendChild(menuDiv);
+        });
+    }
+    
+    // инициализация страницы: строим горизонтальное меню
+    buildHorizontalMenu(culinaryMenu, 'dynamic-horizontal-menu');
+    
+    // небольшой дополнительный функционал: если пользователь кликает на любое подменю
+    // и хочет закрыть все – достаточно кликнуть вне зоны
+    // Также обрабатываем закрытие при нажатии ESC (удобство)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAllSubmenus();
+        }
+    });
+</script>
+</body>
+</html>

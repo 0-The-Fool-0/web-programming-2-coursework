@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарный сборник | SPA + AJAX</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #f7f3e9 0%, #e9e2d4 100%);
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .spa-header {
+            background: #2e241f;
+            padding: 1rem 2rem;
+            color: #f9e3c7;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e0b07f;
+        }
+        .badge-spa {
+            background: #c2793b;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+        .content-pane { padding: 2rem; min-height: 450px; }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        button {
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 3rem;
+            transition: all 0.2s;
+            background: #c56a2c;
+            color: white;
+            padding: 0.7rem 1.8rem;
+            font-size: 1rem;
+        }
+        button:hover { background: #a8541f; transform: scale(1.02); }
+        .btn-secondary { background: #5c483b; }
+        .btn-secondary:hover { background: #3f2e24; }
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 1.2rem;
+            background: #fffcf8;
+            margin: 1.2rem 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .recipes-table { width: 100%; border-collapse: collapse; min-width: 420px; }
+        .recipes-table th {
+            background: #e9dacb;
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-weight: 700;
+        }
+        .recipes-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #f0e2d4;
+            vertical-align: top;
+        }
+        .recipe-name { font-weight: 600; color: #a5521f; }
+        .download-note {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            text-align: center;
+            color: #644f3f;
+        }
+        footer {
+            background: #f9f1e9;
+            text-align: center;
+            padding: 0.9rem;
+            font-size: 0.8rem;
+            color: #8b6b50;
+            border-top: 1px solid #eedfcb;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="spa-header">
+        <h2><span>🍽️</span> Рецептопедия</h2>
+        <div class="badge-spa">SPA + AJAX + Express</div>
+    </div>
+
+    <div id="IPage" class="content-pane"></div>
+
+    <div class="btn-group" style="margin-top:0; margin-bottom:1.5rem;">
+        <button onclick="switchToMainPage()">Главная</button>
+        <button onclick="switchToRecipesPage()">Рецепты</button>
+    </div>
+    <footer>
+        Сборник кулинарных рецептов | Лабораторная №7 ч.2
+    </footer>
+</div>
+
+<script>
+"use strict";
+
+let SPAState = { pagename: "Main" };
+window.onhashchange = switchToStateFromURLHash;
+
+function switchToStateFromURLHash() {
+    const hash = window.location.hash;
+    const stateStr = hash.substr(1);
+    if (stateStr === "Main" || stateStr === "Recipes") {
+        SPAState = { pagename: stateStr };
+    } else {
+        SPAState = { pagename: "Main" };
+    }
+    renderPage();
+}
+
+async function renderPage() {
+    const container = document.getElementById("IPage");
+    const pageFile = SPAState.pagename === "Recipes" ? "recipes.html" : "main.html";
+    try {
+        const response = await fetch("/pages/" + pageFile);
+        if (!response.ok) {
+            throw new Error("Не удалось загрузить HTML-фрагмент: " + pageFile);
+        }
+        container.innerHTML = await response.text();
+    } catch (error) {
+        container.innerHTML = "<p>Ошибка загрузки страницы.</p>";
+        console.error(error);
+    }
+}
+
+async function loadRecipesFromJson() {
+    const target = document.getElementById("AjaxTableZone");
+    if (!target) return;
+
+    target.innerHTML = "<p>Загрузка данных...</p>";
+    try {
+        const response = await fetch("/api/recipes");
+        if (!response.ok) {
+            throw new Error("Ошибка при загрузке JSON-файла");
+        }
+        const recipesData = await response.json();
+        const entries = Object.entries(recipesData);
+
+        const rows = entries.map(([name, description]) =>
+            "<tr><td class='recipe-name'>" + escapeHtml(name) + "</td><td>" + escapeHtml(description) + "</td></tr>"
+        ).join("");
+
+        target.innerHTML =
+            "<div class='table-wrapper'>" +
+            "<table class='recipes-table'>" +
+            "<thead><tr><th>Название рецепта</th><th>Описание</th></tr></thead>" +
+            "<tbody>" + rows + "</tbody>" +
+            "</table>" +
+            "</div>" +
+            "<p class='download-note'>Данные получены с сервера Express через AJAX (fetch).</p>";
+    } catch (error) {
+        target.innerHTML = "<p>Не удалось загрузить данные из JSON.</p>";
+        console.error(error);
+    }
+}
+
+function escapeHtml(str) {
+    return String(str).replace(/[&<>]/g, function(m) {
+        if (m === "&") return "&amp;";
+        if (m === "<") return "&lt;";
+        if (m === ">") return "&gt;";
+        return m;
+    });
+}
+
+function switchToMainPage() { location.hash = "Main"; }
+function switchToRecipesPage() { location.hash = "Recipes"; }
+
+switchToStateFromURLHash();
+</script>
+</body>
+</html>

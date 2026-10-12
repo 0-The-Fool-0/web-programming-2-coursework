@@ -1,0 +1,23 @@
+{
+  "name": "lab8-recipes-crud",
+  "version": "1.0.0",
+  "description": "Лабораторная работа 10: Webpack + RxJS для CRUD-приложения рецептов",
+  "main": "server.js",
+  "scripts": {
+    "build": "webpack --mode development",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.4",
+    "html-webpack-plugin": "^5.6.7",
+    "rxjs": "^7.8.2",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2"
+  }
+}

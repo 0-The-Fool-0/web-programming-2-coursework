@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарная энциклопедия · Адаптив (flex)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            padding: 20px;
+            font-family: Verdana, sans-serif;
+            background-color: #fef9f0;
+        }
+
+        /* контейнер-флекс */
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* МЕНЮ — теперь с текстом и картинкой под заголовком */
+        .menu {
+            flex: 0 0 200px;
+            background-color: #e9d8c5;   /* фон цветом */
+            padding: 15px 10px;
+            border-right: 2px solid #d4a373;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .menu h3 {
+            color: #3b2b1f;
+            margin-bottom: 10px;
+            font-family: Georgia, serif;
+            border-bottom: 1px dashed #b68b6e;
+            padding-bottom: 5px;
+        }
+
+        /* новый текст и картинка в меню */
+        .menu p {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #2c1e13;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .menu .menu-img {
+            width: 100%;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .menu ul {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 6px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 6px 10px;
+            background-color: #f5e6d3;
+            color: #3b2b1f;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 1px solid #b68b6e;
+            transition: background-color 0.2s;
+        }
+
+        .menu a:hover {
+            background-color: #d4a373;
+            color: white;
+        }
+
+        /* КОНТЕНТ */
+        .content {
+            flex: 1;
+            background-color: #fffaf2;
+            padding: 10px 20px 20px;
+            border-radius: 8px 0 0 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        h1 {
+            color: #4a2c2c;
+            font-family: Georgia, serif;
+            border-bottom: 2px solid #d4a373;
+            padding-bottom: 5px;
+            margin-top: 0.2em;
+        }
+
+        h2 {
+            color: #6b4f3c;
+            font-family: Arial, sans-serif;
+            margin-top: 30px;
+        }
+
+        p {
+            text-align: justify;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+        .food-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 15px 0;
+        }
+
+        /* галерея */
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .image-gallery img {
+            width: calc(33.333% - 10px);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .image-gallery img:hover {
+            transform: scale(1.02);
+        }
+
+        
+        .tip-block {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            align-items: flex-start;
+        }
+        .tip-block img {
+            width: 250px;          
+            max-width: 40%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .tip-block .tip-text {
+            flex: 1;
+        }
+        .tip-block .tip-text p {
+            margin-top: 0;
+        }
+        .tip-block .tip-text p:first-child {
+            margin-top: 0;
+        }
+
+       
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .menu {
+                flex: none;
+                width: 100%;
+                border-right: none;
+                border-top: 2px solid #d4a373;
+                border-radius: 8px;
+                order: 2;
+            }
+            .content {
+                order: 1;
+                width: 100%;
+                border-radius: 8px;
+            }
+            .image-gallery img {
+                width: calc(50% - 7.5px);
+            }
+            .tip-block {
+                flex-direction: column;  
+                align-items: stretch;
+            }
+            .tip-block img {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .image-gallery img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="menu">
+            <h3>🍴 Кулинарные ресурсы</h3>
+            <p>Проверенные сайты, блоги и энциклопедии для вдохновения на кухне. Здесь собраны лучшие рецепты со всего мира.</p>
+            <img class="menu-img" src="https://images.unsplash.com/photo-1495195134817-aeb325a55b65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                 alt="Кухонная утварь">
+            <ul>
+                <li><a href="https://ru.wikipedia.org/wiki/Кулинария" target="_blank">Википедия: Кулинария</a></li>
+                <li><a href="https://www.gastronom.ru/" target="_blank">Журнал "Гастрономъ"</a></li>
+                <li><a href="https://eda.ru/" target="_blank">Eda.ru</a></li>
+                <li><a href="https://povarenok.ru/" target="_blank">Povarenok.ru</a></li>
+                <li><a href="https://www.russianfood.com/" target="_blank">RussianFood</a></li>
+                <li><a href="https://www.iamcook.ru/" target="_blank">iamcook</a></li>
+                <li><a href="https://www.kulina.ru/" target="_blank">Kulina.ru</a></li>
+                <li><a href="https://www.say7.info/" target="_blank">Say7</a></li>
+                <li><a href="https://cookpad.com/ru" target="_blank">Cookpad</a></li>
+                <li><a href="https://www.bbcgoodfood.com/" target="_blank">BBC Good Food</a></li>
+                <li><a href="https://www.allrecipes.com/" target="_blank">Allrecipes</a></li>
+                <li><a href="https://www.foodnetwork.com/" target="_blank">Food Network</a></li>
+                <li><a href="https://www.epicurious.com/" target="_blank">Epicurious</a></li>
+                <li><a href="https://www.seriouseats.com/" target="_blank">Serious Eats</a></li>
+                <li><a href="https://www.bonappetit.com/" target="_blank">Bon Appétit</a></li>
+                <li><a href="https://www.taste.com.au/" target="_blank">Taste.com.au</a></li>
+                <li><a href="https://www.marmiton.org/" target="_blank">Marmiton (фр.)</a></li>
+                <li><a href="https://www.lecorbusier.recipes/" target="_blank">Le Corbusier Recipes</a></li>
+                <li><a href="https://www.vegetarian.ru/" target="_blank">Vegetarian.ru</a></li>
+                <li><a href="https://www.patee.ru/" target="_blank">Patee.ru</a></li>
+                <li><a href="https://www.kuharka.ru/" target="_blank">Kuharka.ru</a></li>
+                <li><a href="https://www.multivarka.ru/" target="_blank">Multivarka.ru</a></li>
+                <li><a href="https://www.bread.ru/" target="_blank">Bread.ru</a></li>
+                <li><a href="https://www.konditerka.ru/" target="_blank">Konditerka.ru</a></li>
+                <li><a href="https://www.vkys.info/" target="_blank">Vkys.info</a></li>
+                <li><a href="https://www.cook.ru/" target="_blank">Cook.ru</a></li>
+                <li><a href="https://www.kuking.net/" target="_blank">Kuking.net</a></li>
+                <li><a href="https://www.gotovim.ru/" target="_blank">Gotovim.ru</a></li>
+                <li><a href="https://www.hlebopechka.ru/" target="_blank">Hlebopechka.ru</a></li>
+                <li><a href="https://www.pirogeevo.ru/" target="_blank">Pirogeevo.ru</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h1>Кулинарная энциклопедия</h1>
+            <img class="food-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 alt="Свежие продукты">
+
+            <h2>О проекте</h2>
+            <p>Добро пожаловать в наш сборник кулинарных рецептов! Здесь вы найдёте блюда на любой вкус: от простых завтраков до изысканных ужинов. Мы собрали рецепты разных кухонь мира, чтобы каждый мог порадовать себя и близких новыми вкусами.</p>
+            <p>Наш проект создан для тех, кто любит готовить и хочет расширить свои кулинарные горизонты. Мы публикуем только проверенные рецепты с подробными инструкциями и фотографиями. Все блюда разделены по категориям: супы, салаты, горячее, выпечка, десерты и напитки.</p>
+            <p>Особое внимание мы уделяем национальным кухням. На страницах энциклопедии вы познакомитесь с итальянской пастой, японскими суши, украинским борщом, французскими круассанами и многими другими шедеврами.</p>
+
+            <h2>Категории рецептов</h2>
+            <div class="image-gallery">
+                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Паста">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Пицца">
+                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Салат">
+            </div>
+            <p>Мы разделили все рецепты на удобные категории, чтобы вы могли быстро найти нужное блюдо. В разделе «Супы» собраны как лёгкие овощные супы, так и наваристые солянки и крем-супы. «Салаты» представлены от простых овощных до праздничных многослойных.</p>
+            <p>В категории «Горячее» вы найдёте мясные, рыбные и вегетарианские блюда: от сочных стейков до запеканок и рагу. «Выпечка» порадует любителей домашнего хлеба, пирогов, кексов и печенья. Для сладкоежек работает раздел «Десерты» — торты, пирожные, муссы и мороженое.</p>
+            <p>Также у нас есть отдельная подборка «Напитки»: от утреннего кофе до безалкогольных коктейлей и согревающего глинтвейна. Каждая категория постоянно пополняется новыми рецептами от наших читателей и профессиональных шеф-поваров.</p>
+
+            <h2>Популярные рецепты</h2>
+            <img class="food-img" src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                 alt="Тарелка борща">
+            <p>На основе ваших предпочтений мы составили список самых востребованных блюд. Лидером уже несколько месяцев остаётся «Классический борщ» с пампушками — секретный ингредиент добавляет ему неповторимый вкус. На втором месте «Итальянская паста карбонара», которую наши пользователи готовят даже быстрее, чем заказывают в ресторане.</p>
+            <p>В топ‑5 также вошли: «Нежный Наполеон» — десерт, который тает во рту; «Цезарь с курицей» — идеальный салат для любого стола; и «Шарлотка с яблоками» — простая и любимая с детства выпечка. Каждый рецепт сопровождается видео-инструкцией и советами по подаче.</p>
+            <p>Мы регулярно обновляем рейтинг и добавляем сезонные хиты. Например, летом популярны окрошка и холодные супы, а зимой — сытные запеканки и горячий шоколад. Следите за обновлениями!</p>
+
+            <h2>Советы кулинара</h2>
+            <div class="tip-block">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Процесс приготовления">
+                <div class="tip-text">
+                    <p>Чтобы блюда получались идеальными, мы подготовили несколько профессиональных хитростей. Например, при жарке мяса дайте ему достичь комнатной температуры перед приготовлением — так оно прожарится равномернее. Для насыщенного бульона лук и морковь лучше слегка обжарить перед закладкой в кастрюлю.</p>
+                    <p>Если тесто для пирога никак не становится рассыпчатым, добавьте столовую ложку ледяной воды и уберите в холодильник на 15 минут. А чтобы яйца легко чистились после варки, сразу после готовности обдайте их холодной водой.</p>
+                    <p>И главное — не бойтесь экспериментировать! Заменяйте ингредиенты по своему вкусу, добавляйте любимые специи. Наш сборник — это база, а ваша фантазия сделает каждое блюдо уникальным.</p>
+                </div>
+            </div>
+
+            <h2>Заключение</h2>
+            <p>Спасибо, что посетили наш сайт. Надеемся, информация была полезной и вдохновила вас на кулинарные подвиги. Возвращайтесь за новыми рецептами, участвуйте в обсуждениях и делитесь своими шедеврами!</p>
+            <p>Приятного аппетита и до новых встреч на страницах нашей Кулинарной энциклопедии!</p>
+        </div>
+
+    </div> 
+</body>
+</html>

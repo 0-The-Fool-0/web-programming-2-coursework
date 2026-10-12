@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резиновый фон с рамкой</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #ffffff; padding: 20px; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 30px; }
+        .content { color: #333; text-align: justify; }
+    </style>
+</head>
+<body>
+    <h1>Резиновая рамка</h1>
+    <div style="
+        background:
+            url('images/top-left.png') no-repeat left top,
+            url('images/top-right.png') no-repeat right top,
+            url('images/bottom-left.png') no-repeat left bottom,
+            url('images/bottom-right.png') no-repeat right bottom,
+            url('images/left.png') repeat-y left top,
+            url('images/right.png') repeat-y right top,
+            url('images/top-center.png') repeat-x left top,
+            url('images/bottom-center.png') repeat-x left bottom;
+        padding: 70px;
+    ">
+        <div class="content" style="font-size: 1.1em; line-height: 180%">
+            <p>Это пример текста внутри резиновой рамки. Рамка состоит из девяти частей, которые были вырезаны из исходного изображения ramka.png. Углы фиксированы, а стороны и центр повторяются, поэтому рамка растягивается на любую ширину и высоту в зависимости от объёма содержимого и размера окна браузера.</p>
+<p>Можно добавить ещё абзацы, и рамка автоматически увеличится по высоте. Попробуйте изменить размер окна браузера – верхняя и нижняя стороны будут повторяться по горизонтали, левая и правая – по вертикали, а центр заполнит всю оставшуюся область.</p>
+<p>Таким образом достигается эффект «резинового» фона, который подстраивается под текст и размеры окна.</p>
+        </div>
+    </div>
+</body>
+</html>

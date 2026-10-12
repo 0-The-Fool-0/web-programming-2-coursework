@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Сборник кулинарных рецептов</h1>
+      <p class="subtitle">Лабораторная работа 8: CRUD-приложение на Express</p>
+      <div class="hero-banner">
+        <img src="/images/hero-food.svg" width="1200" height="260" alt="Баннер: домашние рецепты" />
+      </div>
+
+      <section class="card">
+        <h2 id="formTitle">Добавить рецепт</h2>
+        <form id="recipeForm">
+          <input type="hidden" id="recipeId" />
+          <label>
+            Название
+            <input type="text" id="title" required />
+          </label>
+          <label>
+            Описание
+            <textarea id="description" rows="3" required></textarea>
+          </label>
+          <label>
+            Категория
+            <input type="text" id="category" required />
+          </label>
+          <label>
+            Время приготовления (мин)
+            <input type="number" id="cookTimeMinutes" min="1" required />
+          </label>
+          <div class="buttons">
+            <button type="submit">Сохранить</button>
+            <button type="button" id="cancelEdit" class="secondary">Отмена</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Список рецептов</h2>
+        <button id="loadItems">Загрузить записи</button>
+        <div class="toolbar">
+          <label>
+            Поиск по названию
+            <input type="text" id="searchTitle" placeholder="Например: борщ" />
+          </label>
+          <label>
+            Сортировка
+            <select id="sortByTitle">
+              <option value="asc">По названию (А-Я)</option>
+              <option value="desc">По названию (Я-А)</option>
+            </select>
+          </label>
+          <label>
+            Записей на странице
+            <select id="pageSize">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </label>
+        </div>
+        <div id="message"></div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Название</th>
+              <th>Категория</th>
+              <th>Время</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div class="pagination">
+          <button id="prevPage" class="secondary" type="button">Назад</button>
+          <span id="pageInfo">Страница 1 из 1</span>
+          <button id="nextPage" class="secondary" type="button">Вперед</button>
+        </div>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

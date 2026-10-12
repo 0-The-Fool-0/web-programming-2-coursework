@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица ингредиентов</title>
+    <style>
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;  /* одиночные рамки */
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 2px solid #8b5a2b;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #d2b48c;
+            color: #3d2b1f;
+            font-size: 1.2em;
+        }
+        /* Фон для третьего столбца (ячейки заголовка и данных) */
+        td:nth-child(3), th:nth-child(3) {
+            background-color: #f5deb3;
+        }
+        .category {
+            font-weight: bold;
+            background-color: #eee8aa;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Список продуктов для рецептов</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Название продукта</th>
+                <th>Цена (руб.)</th>
+                <th>Количество</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Картофель</td>
+                <td rowspan="3">40</td> <!-- объединены 3 ячейки по вертикали -->
+                <td>1 кг</td>
+            </tr>
+            <tr>
+                <td>Морковь</td>
+                <td>500 г</td>
+            </tr>
+            <tr>
+                <td>Лук репчатый</td>
+                <td>600 г</td>
+            </tr>
+            <tr>
+                <td>Свекла</td>
+                <td>50</td>
+                <td>300 г</td>
+            </tr>
+            <tr>
+                <td>Капуста</td>
+                <td>35</td>
+                <td>1 шт.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="text-align: center;"><i>* Во втором столбце объединены ячейки с ценой для овощей по 40 руб.</i></p>
+</body>
+</html>
