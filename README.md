@@ -14,7 +14,7 @@ The collection is organized into `root collection/` and `repos collection/`. Lab
 
 ## Run a Node-based lab
 
-There is no root-level Node package or single command for the full collection. For a lab that contains both `package.json` and `package-lock.json`, enter that lab's directory and install its dependencies there.
+There is no root-level Node package or single command for the full collection. For a lab that contains both `package.json` and `package-lock.json`, enter that lab's directory and install its dependencies there with `npm ci`.
 
 For example, Lab 10 can be started with:
 
@@ -24,8 +24,8 @@ npm ci
 npm start
 ```
 
-The source defines the start script as `node server.js`; this command was not executed during the review. Static HTML labs can be opened individually in a browser.
+Lab 10 dependency installation and its Webpack build were run successfully in an isolated working copy. Its server command is `node server.js`; a browser-based end-to-end run was not performed. Static HTML labs can be opened individually in a browser.
 
 ## Scope and limitations
 
-This is an academic collection, not one production application. Review the README and manifest inside each lab for lab-specific details. Different variants are retained intentionally. No app builds or tests have been run as part of this documentation update. Confirm course requirements and inspect sample data before making the repository public.
+This is an academic collection, not one production application. Review the README and manifest inside each lab for lab-specific details. Different variants are retained intentionally. JavaScript syntax checks passed across the collection. Lab 10 dependency installation and Webpack build passed; other labs have not been built or tested end to end. Confirm course requirements and inspect sample data before redistribution.

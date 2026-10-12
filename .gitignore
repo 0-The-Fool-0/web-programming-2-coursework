@@ -18,6 +18,7 @@ Thumbs.db
 !.env.example
 .streamlit/secrets.toml
 **/db.json
+**/public/bundle.js
 *.sqlite
 *.sqlite3
 *.db
