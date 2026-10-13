@@ -1,3 +1,5 @@
+[Русская версия](README.ru.md)
+
 # Web Programming 2 Coursework
 
 A structured archive of Web Programming 2 laboratory assignments. The original lab folders and differing versions are preserved rather than merged into a single application.
